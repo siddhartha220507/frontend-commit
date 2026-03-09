@@ -31,7 +31,7 @@ function CelebrityMatch() {
         formData.append("image", file);
 
         try {
-            const API_BASE = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000/api";
+            const API_BASE = import.meta.env.VITE_BACKEND_URL || "https://moviestrunk-backend-2.onrender.com/api";
             // Send to our backend, which uses Multer and Clarifai
             const response = await axios.post(`${API_BASE}/celebrity`, formData, {
                 withCredentials: true
