@@ -1,0 +1,634 @@
+/* Global CSS Reset & Variables */
+:root {
+  --primary-color: #e50914;
+  /* Netflix Red */
+  --bg-color: #141414;
+  --bg-secondary: #222;
+  --text-color: #ffffff;
+  --text-muted: #aaa;
+  --font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --nav-bg: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 100%);
+  --nav-text: #fff;
+  --card-bg: #222;
+}
+
+[data-theme="light"] {
+  --bg-color: #f4f4f4;
+  --bg-secondary: #ffffff;
+  --text-color: #141414;
+  --text-muted: #555;
+  --nav-bg: linear-gradient(to bottom, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 100%);
+  --nav-text: #141414;
+  --card-bg: #fff;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  cursor: none;
+}
+
+a, button, input, textarea, select {
+  cursor: none !important;
+}
+
+.custom-cursor {
+  position: fixed;
+  width: 35px;
+  height: 35px;
+  background-color: rgba(255, 255, 255, 0.1); /* Slightly more transparent */
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 999999;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: difference;
+  backdrop-filter: blur(5px); /* Increased blur */
+  transition: width 0.22s ease-out, height 0.22s ease-out;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.3s ease, transform 0.3s ease;
+  display: inline-block;
+}
+
+.navbar .nav-link {
+  position: relative;
+  padding: 6px 12px;
+  color: var(--nav-text);
+  font-weight: 500;
+  border-radius: 6px;
+  background-color: transparent;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  overflow: hidden;
+  z-index: 1;
+}
+
+.navbar .nav-link.active {
+  background-color: var(--primary-color);
+  color: #fff;
+  font-weight: bold;
+  box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
+}
+
+.navbar .nav-link::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(255, 255, 255, 0.1);
+  z-index: -1;
+  opacity: 0;
+  transform: scale(0.5);
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.navbar .nav-link:hover::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.navbar .nav-link.active::after {
+  display: none;
+}
+
+a:hover {
+  color: var(--primary-color);
+  transform: scale(1.1);
+  /* Smoothly become larger on hover */
+}
+
+/* Glowing Red Line */
+.glowing-line {
+  height: 2px;
+  width: 100%;
+  background: radial-gradient(ellipse at center, rgba(229, 9, 20, 1) 0%, rgba(229, 9, 20, 0.4) 50%, rgba(229, 9, 20, 0) 100%);
+  box-shadow: 0 0 10px rgba(229, 9, 20, 0.8), 0 0 20px rgba(229, 9, 20, 0.5);
+  margin: 2rem 0;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0.8rem 4rem; /* Increased side padding for breathing room */
+  background: var(--nav-bg);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(12px); /* Stronger glass blur */
+  color: var(--nav-text);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: background 0.3s, color 0.3s;
+}
+
+.theme-toggle {
+  background: rgba(128, 128, 128, 0.1);
+  border: none;
+  color: var(--text-color);
+  padding: 6px 14px;
+  border-radius: 30px;
+  cursor: pointer;
+  margin-right: 2rem; /* Increased gap to push menu items back */
+  transition: all 0.3s ease;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  backdrop-filter: blur(4px);
+}
+
+.theme-icon-container {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sun {
+  width: 14px;
+  height: 14px;
+  background: #ffcc33;
+  border-radius: 50%;
+  position: absolute;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 8px #ffcc33;
+}
+
+.moon {
+  width: 14px;
+  height: 14px;
+  background: transparent;
+  border-radius: 50%;
+  position: absolute;
+  box-shadow: inset -5px -2px 0px 0px #fff;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0;
+  transform: rotate(-45deg) scale(0);
+}
+
+.theme-icon-container.dark .sun {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.theme-icon-container.dark .moon {
+  opacity: 0;
+  transform: rotate(-45deg) scale(0);
+}
+
+.theme-icon-container.light .sun {
+  opacity: 0;
+  transform: scale(0);
+}
+
+.theme-icon-container.light .moon {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+  box-shadow: inset -5px -2px 0px 0px #fdcb6e;
+}
+
+.theme-toggle:hover {
+  background: rgba(128, 128, 128, 0.2);
+}
+
+.navbar-links {
+  display: flex;
+  gap: 1rem; /* Slightly reset gap */
+  align-items: center;
+  margin-left: 3rem; /* Gap from the logo */
+  flex: 1;
+}
+
+.navbar-auth {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-left: auto;
+  padding-left: 1.5rem;
+}
+
+/* Home Page Tab Buttons */
+.tab-btn {
+  padding: 8px 16px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  background: rgba(128, 128, 128, 0.08); /* More transparent */
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  backdrop-filter: blur(4px); /* Glass effect */
+}
+
+.tab-btn:hover {
+  background: rgba(128, 128, 128, 0.3);
+  color: white;
+  transform: translateY(-2px) scale(1.05);
+}
+
+.tab-btn.active {
+  font-weight: bold;
+  color: white;
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(229, 9, 20, 0.5);
+}
+
+/* Hero Banner */
+.hero {
+  height: 80vh;
+  background-size: cover;
+  background-position: center top;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 4rem;
+  margin-top: -85px;
+  /* Offset navbar */
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.8) 0%, transparent 100%),
+    linear-gradient(to top, var(--bg-color) 0%, transparent 20%);
+  z-index: 1;
+}
+
+.hero>* {
+  z-index: 2;
+  max-width: 600px;
+}
+
+.hero h1 {
+  font-size: 4rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  color: white;
+  /* Hero text stays white */
+}
+
+.hero p {
+  font-size: 1.2rem;
+  line-height: 1.5;
+  margin-bottom: 2rem;
+  color: #eee;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.hero button {
+  padding: 12px 30px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: fit-content;
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.hero button:hover:not(:disabled) {
+  background-color: #f40612;
+  transform: scale(1.05);
+}
+
+.hero button:disabled {
+  background-color: #555;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Movie Rows (Horizontal Scroll) */
+.movie-row {
+  margin: 1rem 0;
+}
+
+.movie-row h2 {
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+  padding-left: 2rem;
+}
+
+.row-posters {
+  display: flex;
+  overflow-y: hidden;
+  overflow-x: scroll;
+  padding: 10px 20px 20px 20px;
+  gap: 15px;
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+.row-posters::-webkit-scrollbar {
+  display: none;
+  /* Chrome/Safari */
+}
+
+/* Movie Card (Used in Grids and Rows) */
+.movie-card {
+  transition: transform 0.3s ease;
+  flex: 0 0 auto;
+  width: 160px;
+  /* Reduced for smaller cards */
+  position: relative;
+  background: var(--card-bg);
+  /* Removed border radius */
+}
+
+.movie-card img {
+  width: 100%;
+  height: 240px;
+  /* Properly scaled 2:3 ratio */
+  object-fit: cover;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  transition: filter 0.3s ease, transform 0.3s ease;
+  /* Removed border radius */
+}
+
+/* Movie Card Overlay (Play Button & Details) */
+.movie-card-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+  /* Let clicks pass through to the card */
+}
+
+.movie-card:hover .movie-card-overlay {
+  opacity: 1;
+}
+
+.movie-card:hover img {
+  transform: scale(1.05);
+  /* slightly scale the image inside if container hides overflow, though flex card scales full card */
+  filter: blur(2px) brightness(0.7);
+}
+
+.play-button-icon {
+  width: 50px;
+  height: 50px;
+  background-color: rgba(229, 9, 20, 0.9);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: scale(0.5);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.movie-card:hover .play-button-icon {
+  transform: scale(1);
+}
+
+.play-button-icon::after {
+  content: '';
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-left: 15px solid white;
+  margin-left: 5px;
+}
+
+/* Star Animation */
+.fav-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+  transition: transform 0.2s, color 0.2s;
+  outline: none;
+  z-index: 10;
+  color: var(--text-muted); /* Default unfilled star color */
+}
+
+.fav-btn:hover {
+  transform: scale(1.2);
+  color: #fff;
+}
+
+.fav-btn.active {
+  animation: starPopupBlur 0.6s ease-out forwards;
+  color: #ffd700; /* Pure gold */
+}
+
+@keyframes starPopupBlur {
+  0% { transform: scale(1); filter: blur(0px); }
+  50% { transform: scale(1.4); filter: blur(3px); text-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
+  100% { transform: scale(1); filter: blur(0px); text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+}
+
+.movie-card h3 {
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  padding: 0 0.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Responsive Grid (Movies, Search, Favorites) */
+.movie-grid {
+  display: grid;
+  gap: 35px;
+  /* Increased spacing */
+  padding: 20px 2rem;
+  /* Added padding so it doesn't touch the very edges of the screen */
+  justify-content: center;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  /* Smaller min-width */
+}
+
+/* Override inline grid width for Grid layouts vs Row layouts */
+.movie-grid .movie-card {
+  width: 100%;
+  max-width: 220px;
+  /* Reduced max-width so they stay small in grids */
+  margin: 0 auto;
+}
+
+.movie-grid .movie-card img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+}
+
+/* Forms & Inputs */
+input,
+textarea {
+  font-family: var(--font-family);
+}
+
+/* Breakpoints & Media Queries */
+
+/* Tablet (max-width: 900px) */
+@media (max-width: 900px) {
+  .navbar {
+    padding: 1rem 2rem;
+  }
+  .navbar-links {
+    margin-left: 1rem;
+  }
+  .theme-toggle {
+    margin-right: 1rem;
+  }
+}
+
+/* Mobile (max-width: 768px) */
+@media (max-width: 768px) {
+  .navbar {
+    flex-wrap: wrap; /* Let elements wrap instead of straight column */
+    padding: 1rem;
+    gap: 0.5rem;
+    position: relative;
+    justify-content: space-between;
+  }
+
+  .navbar > div:first-child {
+    /* The logo container */
+    width: 100%;
+    margin-bottom: 0.5rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  .navbar-links {
+    margin-left: 0;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    gap: 0.5rem;
+  }
+  
+  .navbar .nav-link {
+    font-size: 0.85rem;
+    padding: 5px 8px;
+  }
+
+  .navbar-auth {
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 0;
+    width: 100%;
+    justify-content: center;
+    margin-top: 0.5rem;
+  }
+  
+  .theme-toggle {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    margin-right: 0;
+  }
+
+  .hero {
+    padding: 0 2rem;
+    height: 60vh;
+    margin-top: -140px; /* Adjust for taller wrapped navbar */
+  }
+
+  .hero h1 {
+    font-size: 2.2rem;
+    margin-top: 50px; /* Push down slightly past nav */
+  }
+
+  .hero p {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .movie-grid {
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 15px;
+    padding: 15px 1rem;
+  }
+
+  .movie-grid .movie-card img {
+    height: 180px;
+  }
+  
+  .movie-card h3 {
+    font-size: 0.8rem;
+  }
+}
+
+/* Small Mobile (max-width: 480px) */
+@media (max-width: 480px) {
+  .hero {
+    padding: 0 1rem;
+  }
+
+  .hero h1 {
+    font-size: 1.8rem;
+    margin-top: 80px;
+  }
+
+  .movie-row h2 {
+    font-size: 1.2rem;
+    padding-left: 0.5rem;
+  }
+
+  .row-posters {
+    padding: 5px 10px 15px 5px;
+    gap: 8px;
+  }
+
+  .movie-card {
+    width: 100%; /* Let flex/grid determine the width */
+    max-width: 150px; /* Sensible upper bound for rows */
+  }
+  
+  .movie-card img {
+    height: auto;
+    aspect-ratio: 2 / 3;
+  }
+
+  .movie-grid {
+    grid-template-columns: 1fr 1fr; /* Exactly 2 equal columns */
+    gap: 8px; 
+    padding: 10px 0.5rem; 
+    width: 100%; /* Ensure no overflow */
+    box-sizing: border-box;
+  }
+
+  .movie-grid .movie-card img {
+    height: auto;
+    aspect-ratio: 2 / 3;
+  }
+}
